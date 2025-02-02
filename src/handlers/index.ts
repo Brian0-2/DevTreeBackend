@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import slugify from "slugify";
 import User from "../models/User";
 import { checkPassword, hashPassword } from "../utils/auth";
+import { generateJWT } from "../config/jsonWebToken";
 
 export const createAccount = async (req: Request , res: Response) => {
   const { email, password } = req.body;
@@ -48,5 +49,9 @@ export const login = async (req: Request , res: Response) => {
     return
   }
 
-  
+
+   const token = generateJWT({id: user.id});
+
+   res.status(200).send(token);
+   return;
 }
